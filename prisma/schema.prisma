@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String?
+  email           String?          @unique
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  healthProfile   HealthProfile?
+  prescriptions   Prescription[]
+  symptomSessions SymptomSession[]
+}
+
+model HealthProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  age             Int?
+  gender          String?
+  heightCm        Float?
+  weightKg        Float?
+  bmi             Float?
+  bmiCategory     String?
+  bpSystolic      Int?
+  bpDiastolic     Int?
+  bloodSugar      Int?
+  activityLevel   String?
+  foodPreference  String?
+  region          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Prescription {
+  id           String    @id @default(cuid())
+  userId       String?
+  doctorName   String?
+  prescribedAt DateTime?
+  notes        String?
+  createdAt    DateTime  @default(now())
+  
+  user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  medicines Medicine[]
+}
+
+model Medicine {
+  id             String  @id @default(cuid())
+  prescriptionId String
+  name           String
+  dosagePattern  String
+  durationDays   Int?
+  notes          String?
+  
+  prescription Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+}
+
+model SymptomSession {
+  id          String   @id @default(cuid())
+  userId      String?
+  description String
+  riskLevel   String
+  resultJson  String
+  createdAt   DateTime @default(now())
+  
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model ConsultWaitlist {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  city      String?
+  concern   String?
+  createdAt DateTime @default(now())
+}
