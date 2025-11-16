@@ -13,8 +13,8 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
             <div className={`max-w-[80%] ${isUser ? 'order-2' : 'order-1'}`}>
                 <div
                     className={`rounded-lg px-4 py-3 ${isUser
-                            ? 'bg-primary-blue text-white'
-                            : 'bg-gray-100 text-gray-900'
+                        ? 'bg-primary-blue text-white'
+                        : 'bg-gray-100 text-gray-900'
                         }`}
                 >
                     <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -52,7 +52,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                         {message.triageResult.homeCareTips.length > 0 && (
                             <div className="bg-white rounded-lg p-3 border border-gray-200">
                                 <p className="text-sm font-medium text-gray-900 mb-2">
-                                    Home Care Tips:
+                                    💡 Home Care Tips:
                                 </p>
                                 <ul className="space-y-1">
                                     {message.triageResult.homeCareTips.map((tip, index) => (
@@ -64,13 +64,45 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                             </div>
                         )}
 
+                        {/* Home Medicines/Remedies */}
+                        {message.triageResult.homeMedicines && message.triageResult.homeMedicines.length > 0 && (
+                            <div className="bg-green-50 rounded-lg p-3 border border-green-200">
+                                <p className="text-sm font-medium text-green-900 mb-2">
+                                    🌿 Home Remedies:
+                                </p>
+                                <ul className="space-y-1">
+                                    {message.triageResult.homeMedicines.map((medicine, index) => (
+                                        <li key={index} className="text-sm text-green-800">
+                                            • {medicine}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Diet Suggestions */}
+                        {message.triageResult.dietSuggestions && message.triageResult.dietSuggestions.length > 0 && (
+                            <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                                <p className="text-sm font-medium text-orange-900 mb-2">
+                                    🍽️ Diet Suggestions:
+                                </p>
+                                <ul className="space-y-1">
+                                    {message.triageResult.dietSuggestions.map((diet, index) => (
+                                        <li key={index} className="text-sm text-orange-800">
+                                            • {diet}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
                         {/* Doctor Recommendation */}
                         <div
                             className={`rounded-lg p-3 border ${message.triageResult.riskLevel === 'HIGH'
-                                    ? 'bg-red-50 border-red-200'
-                                    : message.triageResult.riskLevel === 'MEDIUM'
-                                        ? 'bg-amber-50 border-amber-200'
-                                        : 'bg-blue-50 border-blue-200'
+                                ? 'bg-red-50 border-red-200'
+                                : message.triageResult.riskLevel === 'MEDIUM'
+                                    ? 'bg-amber-50 border-amber-200'
+                                    : 'bg-blue-50 border-blue-200'
                                 }`}
                         >
                             <p className="text-sm font-medium text-gray-900 mb-1">
